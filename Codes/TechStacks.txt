@@ -1,0 +1,46 @@
+
+## **BACKEND**
+**Flask (Python)**
+- Lightweight
+- Easy deployment
+- Quick setup
+- Best for solo dev
+
+## **FRONTEND**
+**HTML + Bootstrap 5 (CDN)**
+- No React complexity
+- Faster development
+- Works with Flask templates
+- Responsive out-of-box
+
+## **DATABASE**
+**SQLite**
+- No MongoDB setup needed
+- Built into Python
+- File-based (easy to include in submission)
+- Works with Flask-SQLAlchemy
+
+## **DEPLOYMENT**
+**PythonAnywhere (Free)**
+- One-click Flask + SQLite deploy
+- Free tier available
+- Easy to share demo link
+
+---
+
+# **📦 FINAL STACK FOR SUBMISSION**
+```yaml
+Backend: Flask 2.3.x
+Database: SQLite3
+Frontend: Bootstrap 5 (CDN) + Jinja2 templates
+Email: SendGrid (free tier)
+Maps: Folium (Python) or Leaflet.js
+Hosting: PythonAnywhere (optional for demo)
+```
+
+"""
+Credits:
+    Bhumika & Jagriti: Logic and Idea
+    AI Chatbots: Optimization, Formatting
+"""
+

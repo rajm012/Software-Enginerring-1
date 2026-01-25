@@ -1,0 +1,957 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SafeAlert - REST API Documentation</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #667eea;
+            --secondary: #764ba2;
+            --success: #28a745;
+            --danger: #dc3545;
+            --warning: #ffc107;
+            --info: #17a2b8;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 40px 0;
+        }
+        
+        .api-container {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+            padding: 40px;
+            margin-bottom: 40px;
+        }
+        
+        .api-header {
+            text-align: center;
+            margin-bottom: 50px;
+            padding-bottom: 30px;
+            border-bottom: 3px solid var(--primary);
+        }
+        
+        .api-header h1 {
+            color: var(--primary);
+            font-weight: 700;
+            margin-bottom: 15px;
+        }
+        
+        .api-header p {
+            color: #6c757d;
+            font-size: 1.1rem;
+        }
+        
+        .endpoint-section {
+            margin-bottom: 40px;
+        }
+        
+        .section-title {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            padding: 15px 20px;
+            border-radius: 8px;
+            margin-bottom: 25px;
+            font-size: 1.3rem;
+            font-weight: 600;
+        }
+        
+        .endpoint-card {
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            overflow: hidden;
+            transition: all 0.3s;
+        }
+        
+        .endpoint-card:hover {
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            transform: translateY(-2px);
+        }
+        
+        .endpoint-header {
+            background: #f8f9fa;
+            padding: 15px 20px;
+            border-bottom: 1px solid #e0e0e0;
+            cursor: pointer;
+        }
+        
+        .endpoint-header:hover {
+            background: #e9ecef;
+        }
+        
+        .http-method {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 4px;
+            font-weight: 600;
+            font-size: 0.85rem;
+            margin-right: 12px;
+        }
+        
+        .method-get { background: var(--info); color: white; }
+        .method-post { background: var(--success); color: white; }
+        .method-put { background: var(--warning); color: white; }
+        .method-delete { background: var(--danger); color: white; }
+        
+        .endpoint-url {
+            font-family: 'Courier New', monospace;
+            font-weight: 600;
+            color: #333;
+        }
+        
+        .endpoint-body {
+            padding: 20px;
+        }
+        
+        .code-block {
+            background: #282c34;
+            color: #abb2bf;
+            padding: 15px;
+            border-radius: 6px;
+            overflow-x: auto;
+            margin: 10px 0;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
+        }
+        
+        .code-block pre {
+            margin: 0;
+            color: #abb2bf;
+        }
+        
+        .json-key { color: #e06c75; }
+        .json-string { color: #98c379; }
+        .json-number { color: #d19a66; }
+        .json-boolean { color: #56b6c2; }
+        
+        .badge-auth {
+            background: #ff6b6b;
+            color: white;
+            padding: 4px 10px;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            margin-left: 10px;
+        }
+        
+        .param-table {
+            width: 100%;
+            margin: 15px 0;
+        }
+        
+        .param-table th {
+            background: #f8f9fa;
+            padding: 10px;
+            border: 1px solid #dee2e6;
+            font-weight: 600;
+        }
+        
+        .param-table td {
+            padding: 10px;
+            border: 1px solid #dee2e6;
+        }
+        
+        .required-badge {
+            background: var(--danger);
+            color: white;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-size: 0.7rem;
+        }
+        
+        .optional-badge {
+            background: var(--info);
+            color: white;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-size: 0.7rem;
+        }
+        
+        .base-url {
+            background: #e7f3ff;
+            padding: 15px;
+            border-left: 4px solid var(--info);
+            border-radius: 4px;
+            margin-bottom: 30px;
+        }
+        
+        .toc {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 30px;
+        }
+        
+        .toc ul {
+            list-style: none;
+            padding-left: 0;
+        }
+        
+        .toc li {
+            padding: 8px 0;
+        }
+        
+        .toc a {
+            text-decoration: none;
+            color: var(--primary);
+            font-weight: 500;
+        }
+        
+        .toc a:hover {
+            color: var(--secondary);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="api-container">
+            <!-- Header -->
+            <div class="api-header">
+                <h1><i class="fas fa-shield-alt"></i> SafeAlert REST API Documentation</h1>
+                <p>Complete reference for all API endpoints used in the Disaster Management System</p>
+            </div>
+
+            <!-- Base URL -->
+            <div class="base-url">
+                <strong><i class="fas fa-link"></i> Base URL:</strong>
+                <code>http://localhost:5000</code> (Development) | 
+                <code>https://rajm012.pythonanywhere.com</code> (Production)
+            </div>
+
+            <!-- Table of Contents -->
+            <div class="toc">
+                <h4><i class="fas fa-list"></i> Table of Contents</h4>
+                <ul>
+                    <li><a href="#auth-section">1. Authentication APIs (7 endpoints)</a></li>
+                    <li><a href="#alert-section">2. Alert Management APIs (4 endpoints)</a></li>
+                    <li><a href="#data-section">3. Data Retrieval APIs (2 endpoints)</a></li>
+                    <li><a href="#status-codes">4. HTTP Status Codes</a></li>
+                    <li><a href="#error-handling">5. Error Handling</a></li>
+                </ul>
+            </div>
+
+            <!-- Authentication APIs -->
+            <div id="auth-section" class="endpoint-section">
+                <div class="section-title">
+                    <i class="fas fa-user-lock"></i> Authentication APIs
+                </div>
+
+                <!-- Register User -->
+                <div class="endpoint-card">
+                    <div class="endpoint-header" data-bs-toggle="collapse" data-bs-target="#register-user">
+                        <span class="http-method method-post">POST</span>
+                        <span class="endpoint-url">/api/auth/register</span>
+                        <span style="color: #6c757d; margin-left: 15px;">Register new user account</span>
+                    </div>
+                    <div id="register-user" class="collapse show endpoint-body">
+                        <p><strong>Description:</strong> Creates a new user account with email and password.</p>
+                        
+                        <h6>Request Body:</h6>
+                        <div class="code-block">
+<pre>{
+  <span class="json-key">"name"</span>: <span class="json-string">"John Doe"</span>,
+  <span class="json-key">"email"</span>: <span class="json-string">"john@example.com"</span>,
+  <span class="json-key">"password"</span>: <span class="json-string">"securepass123"</span>,
+  <span class="json-key">"location"</span>: <span class="json-string">"Mumbai"</span>
+}</pre>
+                        </div>
+
+                        <h6>Parameters:</h6>
+                        <table class="param-table">
+                            <tr>
+                                <th>Parameter</th>
+                                <th>Type</th>
+                                <th>Required</th>
+                                <th>Description</th>
+                            </tr>
+                            <tr>
+                                <td>name</td>
+                                <td>string</td>
+                                <td><span class="required-badge">REQUIRED</span></td>
+                                <td>Full name of the user</td>
+                            </tr>
+                            <tr>
+                                <td>email</td>
+                                <td>string</td>
+                                <td><span class="required-badge">REQUIRED</span></td>
+                                <td>Valid email address (unique)</td>
+                            </tr>
+                            <tr>
+                                <td>password</td>
+                                <td>string</td>
+                                <td><span class="required-badge">REQUIRED</span></td>
+                                <td>Password (min 6 characters)</td>
+                            </tr>
+                            <tr>
+                                <td>location</td>
+                                <td>string</td>
+                                <td><span class="optional-badge">OPTIONAL</span></td>
+                                <td>User's city/location</td>
+                            </tr>
+                        </table>
+
+                        <h6>Success Response (200):</h6>
+                        <div class="code-block">
+<pre>{
+  <span class="json-key">"message"</span>: <span class="json-string">"User registered successfully"</span>,
+  <span class="json-key">"user_id"</span>: <span class="json-number">1</span>
+}</pre>
+                        </div>
+
+                        <h6>Error Response (400):</h6>
+                        <div class="code-block">
+<pre>{
+  <span class="json-key">"error"</span>: <span class="json-string">"Email already registered"</span>
+}</pre>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Register Admin -->
+                <div class="endpoint-card">
+                    <div class="endpoint-header" data-bs-toggle="collapse" data-bs-target="#register-admin">
+                        <span class="http-method method-post">POST</span>
+                        <span class="endpoint-url">/api/auth/register-admin</span>
+                        <span style="color: #6c757d; margin-left: 15px;">Register admin account</span>
+                    </div>
+                    <div id="register-admin" class="collapse endpoint-body">
+                        <p><strong>Description:</strong> Creates a new admin account with referral code verification.</p>
+                        
+                        <h6>Request Body:</h6>
+                        <div class="code-block">
+<pre>{
+  <span class="json-key">"name"</span>: <span class="json-string">"Admin User"</span>,
+  <span class="json-key">"email"</span>: <span class="json-string">"admin@example.com"</span>,
+  <span class="json-key">"password"</span>: <span class="json-string">"adminpass123"</span>,
+  <span class="json-key">"location"</span>: <span class="json-string">"Delhi"</span>,
+  <span class="json-key">"referral_code"</span>: <span class="json-string">"AllIsGood"</span>
+}</pre>
+                        </div>
+
+                        <h6>Parameters:</h6>
+                        <table class="param-table">
+                            <tr>
+                                <th>Parameter</th>
+                                <th>Type</th>
+                                <th>Required</th>
+                                <th>Description</th>
+                            </tr>
+                            <tr>
+                                <td>name</td>
+                                <td>string</td>
+                                <td><span class="required-badge">REQUIRED</span></td>
+                                <td>Full name of the admin</td>
+                            </tr>
+                            <tr>
+                                <td>email</td>
+                                <td>string</td>
+                                <td><span class="required-badge">REQUIRED</span></td>
+                                <td>Valid email address (unique)</td>
+                            </tr>
+                            <tr>
+                                <td>password</td>
+                                <td>string</td>
+                                <td><span class="required-badge">REQUIRED</span></td>
+                                <td>Password (min 6 characters)</td>
+                            </tr>
+                            <tr>
+                                <td>location</td>
+                                <td>string</td>
+                                <td><span class="optional-badge">OPTIONAL</span></td>
+                                <td>Admin's city/location</td>
+                            </tr>
+                            <tr>
+                                <td>referral_code</td>
+                                <td>string</td>
+                                <td><span class="required-badge">REQUIRED</span></td>
+                                <td>Admin referral code (from .env)</td>
+                            </tr>
+                        </table>
+
+                        <h6>Success Response (200):</h6>
+                        <div class="code-block">
+<pre>{
+  <span class="json-key">"message"</span>: <span class="json-string">"Admin registered successfully"</span>,
+  <span class="json-key">"user_id"</span>: <span class="json-number">2</span>
+}</pre>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Login -->
+                <div class="endpoint-card">
+                    <div class="endpoint-header" data-bs-toggle="collapse" data-bs-target="#login">
+                        <span class="http-method method-post">POST</span>
+                        <span class="endpoint-url">/api/auth/login</span>
+                        <span style="color: #6c757d; margin-left: 15px;">User/Admin login</span>
+                    </div>
+                    <div id="login" class="collapse endpoint-body">
+                        <p><strong>Description:</strong> Authenticates user and creates a session.</p>
+                        
+                        <h6>Request Body:</h6>
+                        <div class="code-block">
+<pre>{
+  <span class="json-key">"email"</span>: <span class="json-string">"john@example.com"</span>,
+  <span class="json-key">"password"</span>: <span class="json-string">"securepass123"</span>
+}</pre>
+                        </div>
+
+                        <h6>Success Response (200):</h6>
+                        <div class="code-block">
+<pre>{
+  <span class="json-key">"message"</span>: <span class="json-string">"Login successful"</span>,
+  <span class="json-key">"role"</span>: <span class="json-string">"user"</span>,
+  <span class="json-key">"name"</span>: <span class="json-string">"John Doe"</span>
+}</pre>
+                        </div>
+
+                        <h6>Error Response (401):</h6>
+                        <div class="code-block">
+<pre>{
+  <span class="json-key">"error"</span>: <span class="json-string">"Invalid credentials"</span>
+}</pre>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Logout -->
+                <div class="endpoint-card">
+                    <div class="endpoint-header" data-bs-toggle="collapse" data-bs-target="#logout">
+                        <span class="http-method method-post">POST</span>
+                        <span class="endpoint-url">/api/auth/logout</span>
+                        <span class="badge-auth">AUTH REQUIRED</span>
+                        <span style="color: #6c757d; margin-left: 15px;">Logout user</span>
+                    </div>
+                    <div id="logout" class="collapse endpoint-body">
+                        <p><strong>Description:</strong> Ends user session and logs out.</p>
+
+                        <h6>Success Response (200):</h6>
+                        <div class="code-block">
+<pre>{
+  <span class="json-key">"message"</span>: <span class="json-string">"Logged out successfully"</span>
+}</pre>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Forgot Password -->
+                <div class="endpoint-card">
+                    <div class="endpoint-header" data-bs-toggle="collapse" data-bs-target="#forgot-password">
+                        <span class="http-method method-post">POST</span>
+                        <span class="endpoint-url">/api/auth/forgot-password</span>
+                        <span style="color: #6c757d; margin-left: 15px;">Request password reset OTP</span>
+                    </div>
+                    <div id="forgot-password" class="collapse endpoint-body">
+                        <p><strong>Description:</strong> Sends a 6-digit OTP to user's email for password reset.</p>
+                        
+                        <h6>Request Body:</h6>
+                        <div class="code-block">
+<pre>{
+  <span class="json-key">"email"</span>: <span class="json-string">"john@example.com"</span>
+}</pre>
+                        </div>
+
+                        <h6>Success Response (200):</h6>
+                        <div class="code-block">
+<pre>{
+  <span class="json-key">"message"</span>: <span class="json-string">"OTP sent to your email"</span>
+}</pre>
+                        </div>
+
+                        <h6>Error Response (404):</h6>
+                        <div class="code-block">
+<pre>{
+  <span class="json-key">"error"</span>: <span class="json-string">"Email not found"</span>
+}</pre>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Verify OTP -->
+                <div class="endpoint-card">
+                    <div class="endpoint-header" data-bs-toggle="collapse" data-bs-target="#verify-otp">
+                        <span class="http-method method-post">POST</span>
+                        <span class="endpoint-url">/api/auth/verify-otp</span>
+                        <span style="color: #6c757d; margin-left: 15px;">Verify OTP code</span>
+                    </div>
+                    <div id="verify-otp" class="collapse endpoint-body">
+                        <p><strong>Description:</strong> Verifies the 6-digit OTP sent to email (valid for 10 minutes).</p>
+                        
+                        <h6>Request Body:</h6>
+                        <div class="code-block">
+<pre>{
+  <span class="json-key">"email"</span>: <span class="json-string">"john@example.com"</span>,
+  <span class="json-key">"otp"</span>: <span class="json-string">"123456"</span>
+}</pre>
+                        </div>
+
+                        <h6>Success Response (200):</h6>
+                        <div class="code-block">
+<pre>{
+  <span class="json-key">"message"</span>: <span class="json-string">"OTP verified successfully"</span>
+}</pre>
+                        </div>
+
+                        <h6>Error Response (400):</h6>
+                        <div class="code-block">
+<pre>{
+  <span class="json-key">"error"</span>: <span class="json-string">"Invalid or expired OTP"</span>
+}</pre>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Reset Password -->
+                <div class="endpoint-card">
+                    <div class="endpoint-header" data-bs-toggle="collapse" data-bs-target="#reset-password">
+                        <span class="http-method method-post">POST</span>
+                        <span class="endpoint-url">/api/auth/reset-password</span>
+                        <span style="color: #6c757d; margin-left: 15px;">Reset password after OTP verification</span>
+                    </div>
+                    <div id="reset-password" class="collapse endpoint-body">
+                        <p><strong>Description:</strong> Sets new password after successful OTP verification.</p>
+                        
+                        <h6>Request Body:</h6>
+                        <div class="code-block">
+<pre>{
+  <span class="json-key">"email"</span>: <span class="json-string">"john@example.com"</span>,
+  <span class="json-key">"new_password"</span>: <span class="json-string">"newsecurepass456"</span>
+}</pre>
+                        </div>
+
+                        <h6>Success Response (200):</h6>
+                        <div class="code-block">
+<pre>{
+  <span class="json-key">"message"</span>: <span class="json-string">"Password reset successfully"</span>
+}</pre>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Update Location -->
+                <div class="endpoint-card">
+                    <div class="endpoint-header" data-bs-toggle="collapse" data-bs-target="#update-location">
+                        <span class="http-method method-post">POST</span>
+                        <span class="endpoint-url">/api/auth/update-location</span>
+                        <span class="badge-auth">AUTH REQUIRED</span>
+                        <span style="color: #6c757d; margin-left: 15px;">Update user's location</span>
+                    </div>
+                    <div id="update-location" class="collapse endpoint-body">
+                        <p><strong>Description:</strong> Updates the logged-in user's location.</p>
+                        
+                        <h6>Request Body:</h6>
+                        <div class="code-block">
+<pre>{
+  <span class="json-key">"location"</span>: <span class="json-string">"Bangalore"</span>
+}</pre>
+                        </div>
+
+                        <h6>Success Response (200):</h6>
+                        <div class="code-block">
+<pre>{
+  <span class="json-key">"message"</span>: <span class="json-string">"Location updated successfully"</span>
+}</pre>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Alert Management APIs -->
+            <div id="alert-section" class="endpoint-section">
+                <div class="section-title">
+                    <i class="fas fa-exclamation-triangle"></i> Alert Management APIs
+                </div>
+
+                <!-- Get Alerts -->
+                <div class="endpoint-card">
+                    <div class="endpoint-header" data-bs-toggle="collapse" data-bs-target="#get-alerts">
+                        <span class="http-method method-get">GET</span>
+                        <span class="endpoint-url">/api/alerts</span>
+                        <span class="badge-auth">AUTH REQUIRED</span>
+                        <span style="color: #6c757d; margin-left: 15px;">Get alerts for user's location</span>
+                    </div>
+                    <div id="get-alerts" class="collapse show endpoint-body">
+                        <p><strong>Description:</strong> Retrieves all alerts for the user's registered location with optional filtering.</p>
+                        
+                        <h6>Query Parameters (Optional):</h6>
+                        <table class="param-table">
+                            <tr>
+                                <th>Parameter</th>
+                                <th>Type</th>
+                                <th>Description</th>
+                                <th>Example</th>
+                            </tr>
+                            <tr>
+                                <td>severity</td>
+                                <td>string</td>
+                                <td>Filter by severity level</td>
+                                <td>CRITICAL, HIGH, MEDIUM, LOW</td>
+                            </tr>
+                            <tr>
+                                <td>status</td>
+                                <td>string</td>
+                                <td>Filter by alert status</td>
+                                <td>PENDING, VERIFIED, SENT</td>
+                            </tr>
+                        </table>
+
+                        <h6>Example Request:</h6>
+                        <div class="code-block">
+<pre>GET /api/alerts?severity=CRITICAL&status=SENT</pre>
+                        </div>
+
+                        <h6>Success Response (200):</h6>
+                        <div class="code-block">
+<pre>{
+  <span class="json-key">"alerts"</span>: [
+    {
+      <span class="json-key">"id"</span>: <span class="json-number">1</span>,
+      <span class="json-key">"disaster_type"</span>: <span class="json-string">"Flood"</span>,
+      <span class="json-key">"location"</span>: <span class="json-string">"Mumbai"</span>,
+      <span class="json-key">"severity"</span>: <span class="json-string">"CRITICAL"</span>,
+      <span class="json-key">"description"</span>: <span class="json-string">"Heavy rainfall expected..."</span>,
+      <span class="json-key">"status"</span>: <span class="json-string">"SENT"</span>,
+      <span class="json-key">"scheduled_date"</span>: <span class="json-string">"2026-01-25 14:00:00"</span>,
+      <span class="json-key">"created_at"</span>: <span class="json-string">"2026-01-24 10:00:00"</span>
+    }
+  ]
+}</pre>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Create Alert -->
+                <div class="endpoint-card">
+                    <div class="endpoint-header" data-bs-toggle="collapse" data-bs-target="#create-alert">
+                        <span class="http-method method-post">POST</span>
+                        <span class="endpoint-url">/api/alerts/create</span>
+                        <span class="badge-auth">ADMIN ONLY</span>
+                        <span style="color: #6c757d; margin-left: 15px;">Create new disaster alert</span>
+                    </div>
+                    <div id="create-alert" class="collapse endpoint-body">
+                        <p><strong>Description:</strong> Creates a new disaster alert (admin only).</p>
+                        
+                        <h6>Request Body:</h6>
+                        <div class="code-block">
+<pre>{
+  <span class="json-key">"disaster_type"</span>: <span class="json-string">"Cyclone"</span>,
+  <span class="json-key">"location"</span>: <span class="json-string">"Chennai"</span>,
+  <span class="json-key">"severity"</span>: <span class="json-string">"HIGH"</span>,
+  <span class="json-key">"description"</span>: <span class="json-string">"Cyclone expected to make landfall on Jan 26"</span>,
+  <span class="json-key">"scheduled_date"</span>: <span class="json-string">"2026-01-26 18:00:00"</span>
+}</pre>
+                        </div>
+
+                        <h6>Parameters:</h6>
+                        <table class="param-table">
+                            <tr>
+                                <th>Parameter</th>
+                                <th>Type</th>
+                                <th>Required</th>
+                                <th>Description</th>
+                            </tr>
+                            <tr>
+                                <td>disaster_type</td>
+                                <td>string</td>
+                                <td><span class="required-badge">REQUIRED</span></td>
+                                <td>Type of disaster (Flood, Cyclone, etc.)</td>
+                            </tr>
+                            <tr>
+                                <td>location</td>
+                                <td>string</td>
+                                <td><span class="required-badge">REQUIRED</span></td>
+                                <td>Affected city/location</td>
+                            </tr>
+                            <tr>
+                                <td>severity</td>
+                                <td>string</td>
+                                <td><span class="required-badge">REQUIRED</span></td>
+                                <td>CRITICAL, HIGH, MEDIUM, or LOW</td>
+                            </tr>
+                            <tr>
+                                <td>description</td>
+                                <td>string</td>
+                                <td><span class="required-badge">REQUIRED</span></td>
+                                <td>Detailed alert description (min 10 chars)</td>
+                            </tr>
+                            <tr>
+                                <td>scheduled_date</td>
+                                <td>datetime</td>
+                                <td><span class="optional-badge">OPTIONAL</span></td>
+                                <td>Expected disaster time (YYYY-MM-DD HH:MM:SS)</td>
+                            </tr>
+                        </table>
+
+                        <h6>Success Response (201):</h6>
+                        <div class="code-block">
+<pre>{
+  <span class="json-key">"message"</span>: <span class="json-string">"Alert created successfully"</span>,
+  <span class="json-key">"alert_id"</span>: <span class="json-number">15</span>
+}</pre>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Verify Alert -->
+                <div class="endpoint-card">
+                    <div class="endpoint-header" data-bs-toggle="collapse" data-bs-target="#verify-alert">
+                        <span class="http-method method-post">POST</span>
+                        <span class="endpoint-url">/api/alerts/verify/:id</span>
+                        <span class="badge-auth">ADMIN ONLY</span>
+                        <span style="color: #6c757d; margin-left: 15px;">Verify pending alert</span>
+                    </div>
+                    <div id="verify-alert" class="collapse endpoint-body">
+                        <p><strong>Description:</strong> Changes alert status from PENDING to VERIFIED.</p>
+                        
+                        <h6>URL Parameters:</h6>
+                        <table class="param-table">
+                            <tr>
+                                <th>Parameter</th>
+                                <th>Type</th>
+                                <th>Description</th>
+                            </tr>
+                            <tr>
+                                <td>id</td>
+                                <td>integer</td>
+                                <td>Alert ID to verify</td>
+                            </tr>
+                        </table>
+
+                        <h6>Example Request:</h6>
+                        <div class="code-block">
+<pre>POST /api/alerts/verify/15</pre>
+                        </div>
+
+                        <h6>Success Response (200):</h6>
+                        <div class="code-block">
+<pre>{
+  <span class="json-key">"message"</span>: <span class="json-string">"Alert verified successfully"</span>
+}</pre>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Dispatch Alert -->
+                <div class="endpoint-card">
+                    <div class="endpoint-header" data-bs-toggle="collapse" data-bs-target="#dispatch-alert">
+                        <span class="http-method method-post">POST</span>
+                        <span class="endpoint-url">/api/alerts/dispatch/:id</span>
+                        <span class="badge-auth">ADMIN ONLY</span>
+                        <span style="color: #6c757d; margin-left: 15px;">Dispatch verified alert</span>
+                    </div>
+                    <div id="dispatch-alert" class="collapse endpoint-body">
+                        <p><strong>Description:</strong> Sends alert to all users in affected location via email.</p>
+                        
+                        <h6>URL Parameters:</h6>
+                        <table class="param-table">
+                            <tr>
+                                <th>Parameter</th>
+                                <th>Type</th>
+                                <th>Description</th>
+                            </tr>
+                            <tr>
+                                <td>id</td>
+                                <td>integer</td>
+                                <td>Alert ID to dispatch</td>
+                            </tr>
+                        </table>
+
+                        <h6>Example Request:</h6>
+                        <div class="code-block">
+<pre>POST /api/alerts/dispatch/15</pre>
+                        </div>
+
+                        <h6>Success Response (200):</h6>
+                        <div class="code-block">
+<pre>{
+  <span class="json-key">"message"</span>: <span class="json-string">"Alert dispatched successfully"</span>,
+  <span class="json-key">"emails_sent"</span>: <span class="json-number">125</span>
+}</pre>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Data Retrieval APIs -->
+            <div id="data-section" class="endpoint-section">
+                <div class="section-title">
+                    <i class="fas fa-database"></i> Data Retrieval APIs
+                </div>
+
+                <!-- Get Cities -->
+                <div class="endpoint-card">
+                    <div class="endpoint-header" data-bs-toggle="collapse" data-bs-target="#get-cities">
+                        <span class="http-method method-get">GET</span>
+                        <span class="endpoint-url">/api/cities</span>
+                        <span style="color: #6c757d; margin-left: 15px;">Get list of Indian cities</span>
+                    </div>
+                    <div id="get-cities" class="collapse show endpoint-body">
+                        <p><strong>Description:</strong> Returns list of 50 Indian cities supported by the system.</p>
+
+                        <h6>Success Response (200):</h6>
+                        <div class="code-block">
+<pre>{
+  <span class="json-key">"cities"</span>: [
+    <span class="json-string">"Mumbai"</span>,
+    <span class="json-string">"Delhi"</span>,
+    <span class="json-string">"Bangalore"</span>,
+    <span class="json-string">"Hyderabad"</span>,
+    <span class="json-string">"Chennai"</span>,
+    <span class="json-string">...</span>
+  ]
+}</pre>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Get All Users -->
+                <div class="endpoint-card">
+                    <div class="endpoint-header" data-bs-toggle="collapse" data-bs-target="#get-users">
+                        <span class="http-method method-get">GET</span>
+                        <span class="endpoint-url">/api/users/all</span>
+                        <span class="badge-auth">ADMIN ONLY</span>
+                        <span style="color: #6c757d; margin-left: 15px;">Get all registered users</span>
+                    </div>
+                    <div id="get-users" class="collapse endpoint-body">
+                        <p><strong>Description:</strong> Returns list of all registered users with their details (admin only).</p>
+
+                        <h6>Success Response (200):</h6>
+                        <div class="code-block">
+<pre>{
+  <span class="json-key">"users"</span>: [
+    {
+      <span class="json-key">"id"</span>: <span class="json-number">1</span>,
+      <span class="json-key">"name"</span>: <span class="json-string">"John Doe"</span>,
+      <span class="json-key">"email"</span>: <span class="json-string">"john@example.com"</span>,
+      <span class="json-key">"location"</span>: <span class="json-string">"Mumbai"</span>,
+      <span class="json-key">"role"</span>: <span class="json-string">"user"</span>,
+      <span class="json-key">"created_at"</span>: <span class="json-string">"2026-01-20 10:30:00"</span>
+    }
+  ]
+}</pre>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- HTTP Status Codes -->
+            <div id="status-codes" class="endpoint-section">
+                <div class="section-title">
+                    <i class="fas fa-code"></i> HTTP Status Codes
+                </div>
+                <table class="param-table">
+                    <tr>
+                        <th>Code</th>
+                        <th>Status</th>
+                        <th>Description</th>
+                    </tr>
+                    <tr>
+                        <td><strong>200</strong></td>
+                        <td>OK</td>
+                        <td>Request successful</td>
+                    </tr>
+                    <tr>
+                        <td><strong>201</strong></td>
+                        <td>Created</td>
+                        <td>Resource created successfully</td>
+                    </tr>
+                    <tr>
+                        <td><strong>400</strong></td>
+                        <td>Bad Request</td>
+                        <td>Invalid request data</td>
+                    </tr>
+                    <tr>
+                        <td><strong>401</strong></td>
+                        <td>Unauthorized</td>
+                        <td>Authentication required or failed</td>
+                    </tr>
+                    <tr>
+                        <td><strong>403</strong></td>
+                        <td>Forbidden</td>
+                        <td>Insufficient permissions (not admin)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>404</strong></td>
+                        <td>Not Found</td>
+                        <td>Resource not found</td>
+                    </tr>
+                    <tr>
+                        <td><strong>500</strong></td>
+                        <td>Internal Server Error</td>
+                        <td>Server error</td>
+                    </tr>
+                </table>
+            </div>
+
+            <!-- Error Handling -->
+            <div id="error-handling" class="endpoint-section">
+                <div class="section-title">
+                    <i class="fas fa-exclamation-circle"></i> Error Handling
+                </div>
+                <p>All error responses follow a consistent format:</p>
+                <div class="code-block">
+<pre>{
+  <span class="json-key">"error"</span>: <span class="json-string">"Error message describing what went wrong"</span>
+}</pre>
+                </div>
+
+                <h5 class="mt-4">Common Error Messages:</h5>
+                <table class="param-table">
+                    <tr>
+                        <th>Error Message</th>
+                        <th>Cause</th>
+                        <th>Solution</th>
+                    </tr>
+                    <tr>
+                        <td>Email already registered</td>
+                        <td>Email exists in database</td>
+                        <td>Use different email or login</td>
+                    </tr>
+                    <tr>
+                        <td>Invalid credentials</td>
+                        <td>Wrong email or password</td>
+                        <td>Check credentials or reset password</td>
+                    </tr>
+                    <tr>
+                        <td>Invalid or expired OTP</td>
+                        <td>OTP incorrect or older than 10 mins</td>
+                        <td>Request new OTP</td>
+                    </tr>
+                    <tr>
+                        <td>Unauthorized</td>
+                        <td>Not logged in</td>
+                        <td>Login first</td>
+                    </tr>
+                    <tr>
+                        <td>Admin access required</td>
+                        <td>Non-admin user trying admin endpoint</td>
+                        <td>Login with admin account</td>
+                    </tr>
+                </table>
+            </div>
+
+            <!-- Footer -->
+            <div style="text-align: center; padding-top: 40px; border-top: 2px solid #e0e0e0; margin-top: 50px; color: #6c757d;">
+                <p><strong>SafeAlert REST API Documentation</strong></p>
+                <p>Version 1.0 | Last Updated: 25th January 2026</p>
+                <p><i class="fas fa-shield-alt"></i> Built for disaster preparedness and public safety</p>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
+
+<!-- """
+Credits:
+    Anuj & Pranjal: Logic, Code and Idea
+    AI Chatbots: Optimization, Formatting
+""" -->

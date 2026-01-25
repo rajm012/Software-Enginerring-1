@@ -1,0 +1,280 @@
+======================================================
+SafeAlert - Testing Checklist
+======================================================
+
+TEST CREDENTIALS:
+------------------------------------------------------
+Regular User:
+  Email: user1@test.com
+  Password: password1
+
+Admin User:
+  Email: admin1@test.com
+  Password: admin1123
+------------------------------------------------------
+
+
+1. AUTHENTICATION TESTS
+======================================================
+
+[ ] User Registration
+    - Navigate to /register
+    - Create new account with valid email
+    - Verify success message
+    - Check database for new user
+
+[ ] Admin Registration
+    - Navigate to /register-admin
+    - Create new admin account
+    - Verify admin role assigned
+
+[ ] Login
+    - Login with test credentials (user1/admin1)
+    - Verify successful redirect to dashboard
+    - Check session persistence
+
+[ ] Logout
+    - Click logout button
+    - Verify redirect to home page
+    - Confirm session cleared
+
+[ ] Forgot Password
+    - Click "Forgot Password" link
+    - Enter registered email (rajmahimaurya@gmail.com)
+    - Receive OTP email
+    - Enter 6-digit OTP
+    - Set new password
+    - Login with new password
+
+
+2. USER DASHBOARD TESTS
+======================================================
+
+[ ] Location Update
+    - Select city from dropdown (50 Indian cities)
+    - Or enter city manually
+    - Click "Update Location"
+    - Verify success message
+    - Reload page to confirm persistence
+
+[ ] View Alerts
+    - See list of disaster alerts
+    - Check alert details (type, severity, status)
+    - Verify scheduled alerts show date/time with ⚠️ icon
+    - Confirm 50 dummy alerts visible
+
+[ ] Alert Filters
+    - Filter by severity (CRITICAL/HIGH/MEDIUM/LOW)
+    - Filter by status (SENT/VERIFIED/PENDING)
+    - Apply multiple filters
+    - Verify filtered results
+
+[ ] Alert Details
+    - Click on individual alerts
+    - View complete description
+    - Check timestamp accuracy
+    - Verify location displayed
+
+
+3. ADMIN DASHBOARD TESTS
+======================================================
+
+[ ] Create Alert
+    - Select disaster type from dropdown
+    - Choose city (50 Indian cities available)
+    - Set severity level
+    - Add description (min 10 chars)
+    - Set scheduled date/time (optional)
+    - Submit and verify creation
+
+[ ] Scheduled Alerts
+    - Create alert with future date/time
+    - Verify scheduled date displayed
+    - Check ⚠️ icon appears
+    - Confirm timezone handling
+
+[ ] Verify Alert
+    - Find PENDING alert
+    - Click "Verify" button
+    - Confirm status changed to VERIFIED
+
+[ ] Dispatch Alert
+    - Find VERIFIED alert
+    - Click "Dispatch" button
+    - Confirm status changed to SENT
+    - Check if emails sent (if enabled)
+
+[ ] Statistics
+    - View dashboard stats (total, pending, verified, sent)
+    - Verify numbers match database
+    - Check real-time updates
+
+
+4. USERS PANEL TESTS (Admin Only)
+======================================================
+
+[ ] Location Distribution
+    - Navigate to /users-panel
+    - View cards showing user count per city
+    - Verify 65 test users distributed across 43 cities
+    - Check top locations displayed
+
+[ ] User Search
+    - Search users by name
+    - Search by email
+    - Search by location
+    - Verify instant search results
+
+[ ] View User Details
+    - Click on user card
+    - View name, email, location
+    - Check phone number (if available)
+    - Verify contact information
+
+
+5. EMAIL FUNCTIONALITY TESTS
+======================================================
+
+[ ] OTP Email
+    - Trigger forgot password
+    - Check rajmahimaurya@gmail.com inbox
+    - Verify OTP email received
+    - Confirm 6-digit code format
+    - Check 10-minute expiry
+
+[ ] Gmail SMTP
+    - Verify SMTP connection (smtp.gmail.com:587)
+    - Check TLS enabled
+    - Confirm sender email correct
+
+[ ] Email Content
+    - Verify professional formatting
+    - Check subject line clarity
+    - Confirm OTP prominently displayed
+
+
+6. DATA VALIDATION TESTS
+======================================================
+
+[ ] Test Data Present
+    - 65 users (60 regular + 5 admins)
+    - 50 dummy alerts across 34 cities
+    - 43 cities with users
+    - Severity distribution (13 critical, 17 high, 20 medium, 4 low)
+    - Status distribution (12 pending, 14 verified, 28 sent)
+    - 19 scheduled alerts
+
+[ ] Database Integrity
+    - Check SQLite database created
+    - Verify all tables exist (users, alerts)
+    - Confirm relationships maintained
+    - Check data types correct
+
+
+7. UI/UX TESTS
+======================================================
+
+[ ] Color Contrast
+    - All text readable against backgrounds
+    - Dashboard background #f5f7fa (clean white)
+    - Stat labels visible (white text on gradient)
+    - Muted text #6c757d
+
+[ ] Responsive Design
+    - Test on mobile (320px width)
+    - Test on tablet (768px width)
+    - Test on desktop (1920px width)
+    - Verify navbar collapses properly
+
+[ ] Bootstrap Components
+    - Cards display correctly
+    - Buttons clickable and styled
+    - Forms validated
+    - Modals open/close properly
+
+[ ] Icons & Emojis
+    - FontAwesome icons load
+    - Emoji icons display (🚨, 🛡️, ⚠️)
+    - Visual consistency maintained
+
+
+8. API ENDPOINT TESTS
+======================================================
+
+[ ] GET /api/cities
+    - Returns 50 Indian cities
+    - JSON format correct
+    - No duplicates
+
+[ ] GET /api/users/all (Admin only)
+    - Returns all 65 users
+    - User details complete
+    - Location data accurate
+
+[ ] POST /api/auth/login
+    - Accepts valid credentials
+    - Returns session token
+    - Rejects invalid credentials
+
+[ ] POST /api/alerts/create (Admin only)
+    - Creates new alert
+    - Validates required fields
+    - Returns alert ID
+
+[ ] GET /api/alerts
+    - Returns alerts for user's location
+    - Pagination works
+    - Filters apply correctly
+
+
+9. SECURITY TESTS
+======================================================
+
+[ ] Password Hashing
+    - Passwords not stored in plain text
+    - Werkzeug security used
+    - Login verification works
+
+[ ] Session Management
+    - Sessions expire after logout
+    - Protected routes require login
+    - Admin routes check role
+
+[ ] OTP Security
+    - OTP expires after 10 minutes
+    - Cannot reuse expired OTP
+    - Case-insensitive OTP entry
+
+
+10. ERROR HANDLING TESTS
+======================================================
+
+[ ] Invalid Login
+    - Wrong email shows error
+    - Wrong password shows error
+    - Error message displayed
+
+[ ] Duplicate Registration
+    - Existing email rejected
+    - Error message clear
+
+[ ] Missing Required Fields
+    - Form validation works
+    - Descriptive error messages
+    - Field highlighting
+
+[ ] Database Errors
+    - Graceful error handling
+    - No stack traces shown to users
+    - Logs error details
+
+
+======================================================
+Run Server: python app.py
+Default Port: http://localhost:5000
+======================================================
+
+
+Credits: Harshit Singh and Aditya Jilowa
+Shout to: Anuj (For recommeding some specific tests for quality) 
+

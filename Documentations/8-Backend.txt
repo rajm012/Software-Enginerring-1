@@ -1,0 +1,169 @@
+
+## 1️⃣ App starts (Initialization)
+
+* Flask app boots
+* Loads environment variables
+* Connects to SQLite database
+* Registers routes and middleware
+* System is ready to accept requests
+
+---
+
+## 2️⃣ User lifecycle
+
+### User registration
+
+* User submits name, email, password, location
+* Backend:
+
+  * validates input
+  * hashes password
+  * stores user in `users` table
+* User is now registered
+
+---
+
+### User login
+
+* User submits email + password
+* Backend:
+
+  * verifies password hash
+  * issues auth session/JWT
+* User becomes authenticated
+
+---
+
+### Forgot / change password
+
+* User requests password reset
+* Backend:
+  * generates reset token
+  * emails token (SendGrid)
+* User resets password
+* Password hash updated in DB
+
+---
+
+## 3️⃣ Admin lifecycle (controlled access)
+
+### Admin creation
+
+* Admin is created via:
+
+  * referral code 
+  (Currently code as AllIsGood)
+* Admin credentials stored securely
+
+---
+
+### Admin login
+
+* Admin logs in
+* Backend:
+
+  * verifies admin role
+  * issues admin session/JWT
+* Admin gets elevated permissions
+
+---
+
+## 4️⃣ Authorization (gatekeeper)
+
+For every request:
+
+* Backend checks:
+
+  * user/admin identity
+  * role permissions
+* Blocks unauthorized actions
+
+---
+
+## 5️⃣ Alert lifecycle (core system)
+
+### Alert creation
+
+* Admin submits alert data
+* Backend:
+
+  * validates location and content
+  * stores alert as **PENDING**
+* No alert is sent yet
+
+---
+
+### Alert verification (safety)
+
+* Admin verifies alert
+* Backend checks:
+
+  * duplicates
+  * correctness
+* Alert status → **VERIFIED**
+
+---
+
+### Alert dispatch
+
+* Backend:
+
+  * fetches users in affected location
+  * sends emails via SendGrid
+  * logs delivery status per user
+* Alert status → **SENT**
+
+---
+
+## 6️⃣ User alert reception
+
+* User requests alerts
+* Backend:
+
+  * fetches alerts for user location
+* User sees:
+
+  * message
+  * severity
+  * timestamp
+
+---
+
+## 7️⃣ Logging & audit
+
+Backend logs:
+
+* alert creation
+* verification
+* dispatch
+* email success/failure
+* admin actions
+
+Used for:
+
+* reliability proof
+* safety justification
+* testing report
+
+---
+
+## 8️⃣ End state
+
+* System returns to idle
+* Waits for next request
+
+---
+
+## One-line summary
+
+> **Authenticate → Authorize → Verify → Notify → Log**
+
+This is the **entire backend flow**, clean and evaluator-friendly.
+
+
+"""
+Credits:
+    Bhumika & Jagriti: Logic, Code and Idea
+    AI Chatbots: Optimization, Formatting
+"""
+

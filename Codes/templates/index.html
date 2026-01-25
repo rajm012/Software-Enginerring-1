@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SafeAlert</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+    <!-- Hero Section -->
+    <div class="hero-section">
+        <nav class="navbar navbar-expand-lg navbar-dark">
+            <div class="container">
+                <a class="navbar-brand" href="#">🛡️ SafeAlert</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav ms-auto">
+                        <li class="nav-item">
+                            <a class="nav-link" href="/login.html">Login</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/register.html">Register</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+
+        <div class="container text-center text-white pt-5">
+            <h1 class="display-3 fw-bold mb-4 animate-fade-in">Stay Safe, Stay Informed</h1>
+            <p class="lead mb-5 animate-slide-up">Real-time disaster alerts and emergency notifications to keep your community safe</p>
+            <div class="animate-slide-up">
+                <a href="/register.html" class="btn btn-light btn-lg me-3 mb-2">Get Started</a>
+                <a href="/login.html" class="btn btn-outline-light btn-lg mb-2">Sign In</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Features Section -->
+    <div class="container my-5 py-5">
+        <h2 class="text-center mb-5">How It Works</h2>
+        <div class="row g-4">
+            <div class="col-md-4">
+                <div class="card h-100 shadow-sm hover-lift">
+                    <div class="card-body text-center p-4">
+                        <div class="feature-icon mb-3">📱</div>
+                        <h4 class="card-title">Instant Notifications</h4>
+                        <p class="card-text">Receive real-time alerts about disasters and emergencies in your area via email notifications.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card h-100 shadow-sm hover-lift">
+                    <div class="card-body text-center p-4">
+                        <div class="feature-icon mb-3">🎯</div>
+                        <h4 class="card-title">Location-Based</h4>
+                        <p class="card-text">Get alerts relevant to your specific location. Only receive notifications that matter to you.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card h-100 shadow-sm hover-lift">
+                    <div class="card-body text-center p-4">
+                        <div class="feature-icon mb-3">⚡</div>
+                        <h4 class="card-title">Priority Levels</h4>
+                        <p class="card-text">Alerts are categorized by severity: Critical, High, Medium, and Low priority levels.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Alert Types Section -->
+    <div class="bg-light py-5">
+        <div class="container">
+            <h2 class="text-center mb-5">Alert Categories</h2>
+            <div class="row g-4">
+                <div class="col-md-3">
+                    <div class="text-center p-3">
+                        <div class="severity-icon critical mb-3">🔥</div>
+                        <h5>Critical</h5>
+                        <p class="text-muted small">Immediate life-threatening situations</p>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="text-center p-3">
+                        <div class="severity-icon high mb-3">⚠️</div>
+                        <h5>High Priority</h5>
+                        <p class="text-muted small">Urgent situations requiring quick action</p>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="text-center p-3">
+                        <div class="severity-icon medium mb-3">ℹ️</div>
+                        <h5>Medium</h5>
+                        <p class="text-muted small">Important advisories and warnings</p>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="text-center p-3">
+                        <div class="severity-icon low mb-3">📢</div>
+                        <h5>Low Priority</h5>
+                        <p class="text-muted small">General information and updates</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- For Admins Section -->
+    <div class="container my-5 py-5">
+        <div class="row align-items-center">
+            <div class="col-md-6">
+                <h2 class="mb-4">For Emergency Administrators</h2>
+                <p class="lead">Manage and dispatch alerts efficiently with our comprehensive admin dashboard.</p>
+                <ul class="list-unstyled mt-4">
+                    <li class="mb-3">✓ Create and manage disaster alerts</li>
+                    <li class="mb-3">✓ Verify alerts before dispatching</li>
+                    <li class="mb-3">✓ Track delivery statistics</li>
+                    <li class="mb-3">✓ Monitor alert history and audit logs</li>
+                </ul>
+                <a href="/register-admin.html" class="btn btn-gradient mt-3">Register as Admin</a>
+            </div>
+            <div class="col-md-6">
+                <div class="card shadow-lg">
+                    <div class="card-body p-4">
+                        <h5 class="card-title mb-3">Admin Features</h5>
+                        <div class="stat-card mb-3" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white;">
+                            <div class="stat-label">Real-time Dashboard</div>
+                            <div class="stat-number">📊</div>
+                        </div>
+                        <div class="stat-card mb-3" style="background: #28a745; color: white;">
+                            <div class="stat-label">Alert Verification</div>
+                            <div class="stat-number">✅</div>
+                        </div>
+                        <div class="stat-card" style="background: #17a2b8; color: white;">
+                            <div class="stat-label">Bulk Notifications</div>
+                            <div class="stat-number">📧</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-dark text-white py-4">
+        <div class="container text-center">
+            <p class="mb-0">&copy; 2024 Disaster Management System. Built with care for community safety.</p>
+            <p class="small mt-2 text-muted">Emergency Services | 24/7 Alert System | Community First</p>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script type="module">
+        // Check if user is already logged in
+        import { getUserData } from '/static/js/utils.js';
+        
+        const user = getUserData();
+        if (user) {
+            // Redirect to appropriate dashboard
+            window.location.href = user.is_admin ? '/admin-dashboard.html' : '/user-dashboard.html';
+        }
+    </script>
+</body>
+</html>
+
+<!-- 
+"""
+Credits:
+    Raj & Om: Logic, Code and Idea
+    AI Chatbots: Optimization, Formatting
+""" -->
+
